@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <a class="navbar-brand" href="{% url 'index' %}">SAK Blog</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span id="navbar-toggle" class="navbar-toggler-icon"></span>
+        
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'about' %}">Hakkimizda</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'article:show' %}">Makaleler</a>
+          </li>
+          
+        </ul>
+         <ul id="bulucu" class="navbar-nav ms-auto">
+         {% if request.user.is_authenticated %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'article:dashboard' %}">Control Dashboard</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'user:logout' %}">Log Out</a>
+          </li>
+            
+        {% else %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'user:register' %}">Kayit Olun</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'user:login' %}">Giris</a>
+            </li>
+        {% endif %}
+
+        </ul>
+      </div>
+
+    </nav>

@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h1>Articles</h1>
+<hr>
+<form action="/articles/" method="get" style="float:right"> 
+        <div class="input-group mb-3">
+            <input type="text" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Search" name = "keyword">
+            <button type="submit" class="btn btn-danger">Search</button>
+        </div>
+</form>
+
+{% if articles %}
+
+{% for article in articles %}
+
+<div class="row">
+    <div class="col-6 col-md-10 d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <a class="baslik" href="{% url 'article:detail' article.id%}"><h3 class="fw-bolder mb-1 baslik">{{article.title}}</h3> </a>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">Posted on {{months}} {{article.created_date.day}}, {{article.created_date.year}} by {{ article.author.username }} ,</div>
+
+                        </header>
+                        <!-- Preview image figure-->
+                        {% if article.article_img %}
+                            <figure class="mb-4"><img style="width:450px;height:200px" class="img-fluid rounded" src="{{article.article_img.url}}" alt="..." /></figure>
+                        {% else %}
+                            <figure class="mb-4"><img style="width:450px;height:200px" class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                        {% endif %}
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">
+                                <div class = "post_body">
+                                    {{ article.content |safe|truncatewords:"30"|linebreaks }}
+                                    <a style="float:right;" class="btn btn-outline-danger" href="{% url 'article:detail' article.id%}">READ MORE</a>
+                                </div>
+                            </p>
+                        </section>
+                    </article>
+                    <br>
+                    <hr>
+                    
+                </div>
+    </div>
+</div>
+
+{% endfor %}
+
+
+
+{% else %}
+
+<div class="alert alert-danger">There Are No Articles.</div>
+
+{% endif %}
+
+{% endblock body %}
+

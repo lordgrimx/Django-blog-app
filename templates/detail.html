@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{%load static%}
+
+{% block body %}
+<div class="row">
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{article.title}}</h1>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">Posted on {{months}} {{article.created_date.day}}, {{article.created_date.year}} by {{ article.author.username }} ,</div>
+
+                        </header>
+                        <!-- Preview image figure-->
+                        {% if article.article_img %}
+                            <figure class="mb-4"><img style="width:900px;height:400px" class="img-fluid rounded" src="{{article.article_img.url}}" alt="..." /></figure>
+                        {% else %}
+                            <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                        {% endif %}
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">
+                                {{article.content | safe}}
+                            </p>
+                        </section>
+                    </article>
+                    <!-- Comments section-->
+                    <section class="mb-5">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <!-- Comment form-->
+                                <form class="mb-4" method="post" action="{% url 'article:comment' article.id%}">
+                                {% csrf_token %}
+                                <input name="comment_content" type="text" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!">
+                                <button style="float:right;margin-top:5px;" type="submit" class="btn btn-danger">Add Comment</button>
+                                </form>
+                                {% if comment %}
+                                
+                                    {% for comm in comment %}
+                                    <div class="d-flex mb-4">
+                                    {% if comm.comment_station == '1' %}
+                                        <div class="flex-shrink-0"><img style="width:50px;height:50px;" class="rounded-circle" src="{%static 'good.png'%}" alt="..." /></div>
+                                    {% endif %}
+                                    {% if comm.comment_station == '-1' %}
+                                        <div class="flex-shrink-0"><img style="width:50px;height:50px;" class="rounded-circle" src="{%static 'bad.png'%}" alt="..." /></div>
+                                    {% endif %}
+                                    {% if comm.comment_station == '0' %}
+                                        <div class="flex-shrink-0"><img style="width:50px;height:50px;" class="rounded-circle" src="{%static 'normal.png'%}" alt="..." /></div>
+                                    {% endif %}
+                                        <div class="ms-3">
+                                            
+                                            <div class="fw-bold">{{comm.comment_author}}</div>
+                                            <div style="font-size:12px;">{{comm.comment_date}}</div>
+                                            <div class="text-break">{{comm.comment_content}}</div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    {% endfor %}
+                                        
+                                {% else %}
+                                <br>
+                                    <div class="alert alert-danger">Herhangi bir yorum yapilmamis.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+</div>
+
+
+{% endblock body %}
